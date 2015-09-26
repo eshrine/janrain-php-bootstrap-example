@@ -18,7 +18,8 @@ function janrain_social_auth($auth_token) {
         'locale' => 'en-US',
         'response_type' => 'code',
         'redirect_uri' => 'https://localhost',
-        'token' => $auth_token
+        'token' => $auth_token,
+        'registration_form' => 'socialRegistrationForm'
     );
 
     return janrain_api('/oauth/auth_native', $params);
@@ -48,6 +49,67 @@ function janrain_traditional_auth($email, $password) {
     return janrain_api('/oauth/auth_native_traditional', $params);
 }
 
+/**
+ *  Perform a Janrain social registration.
+ *
+ *  @param string $token        returned from Janrain Social Login widget
+ *  @param string $email        user's email address
+ *  @param string $firstName    user's first name
+ *  @param string $lastName     user's last name
+ *  @param string $displayName  user's display name
+ *
+ *  @return array associative array representation of the JSON response from
+ *                the Janrain API
+ */
+function janrain_social_registration($token, $email, $firstName, $lastName, $displayName) {
+    $params = array(
+        'client_id' => JANRAIN_LOGIN_CLIENT_ID,
+        'locale' => 'en-US',
+        'response_type' => 'code',
+        'redirect_uri' => 'https://localhost',
+        'form' => 'socialRegistrationForm',
+        'firstName' => $firstName,
+        'lastName' => $lastName,
+        'displayName' => $displayName,
+        'emailAddress' => $email,
+        'token' => $token
+    );
+
+    return janrain_api('/oauth/register_native', $params);
+}
+
+/**
+ *  Perform a Janrain traditional registration.
+ *
+ *  @param string $email            user's email address
+ *  @param string $password         user's password
+ *  @param string $passwordConfirm  user's password confirm
+ *  @param string $firstName        user's first name
+ *  @param string $lastName         user's last name
+ *  @param string $displayName      user's display name
+ *
+ *  @return array associative array representation of the JSON response from
+ *                the Janrain API
+ */
+function janrain_traditional_registration($email, $password, $passwordConfirm, 
+    $firstName, $lastName, $displayName) {
+
+    $params = array(
+        'client_id' => JANRAIN_LOGIN_CLIENT_ID,
+        'locale' => 'en-US',
+        'response_type' => 'code',
+        'redirect_uri' => 'https://localhost',
+        'form' => 'registrationForm',
+        'firstName' => $firstName,
+        'lastName' => $lastName,
+        'displayName' => $displayName,
+        'emailAddress' => $email,
+        'newPassword' => $password,
+        'newPasswordConfirm' => $passwordConfirm
+    );
+
+    return janrain_api('/oauth/register_native_traditional', $params);
+}
 
 /**
  *  Exchange authorization code for access token and refresh token

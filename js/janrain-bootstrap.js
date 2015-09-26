@@ -25,9 +25,9 @@
     e.id = 'janrainAuthWidget';
 
     if (document.location.protocol === 'https:') {
-      e.src = 'https://rpxnow.com/js/lib/maple/engage.js';
+      e.src = 'https://rpxnow.com/js/lib/eshrine/engage.js';
     } else {
-      e.src = 'http://widget-cdn.rpxnow.com/js/lib/maple/engage.js';
+      e.src = 'http://widget-cdn.rpxnow.com/js/lib/eshrine/engage.js';
     }
 
     var s = document.getElementsByTagName('script')[0];
@@ -38,6 +38,7 @@ var JanrainBootstrap = (function($, janrain) {
 
     var signInUrl = 'sign_in.php';
     var signOutUrl = 'sign_out.php';
+    var registerUrl = 'register.php';
     var sessionDataUrl = 'session_data.php';
 
     var addBootstrapEventHandlers = function() {
@@ -56,6 +57,25 @@ var JanrainBootstrap = (function($, janrain) {
             // TODO: this becomes signIn()
             console.log($(this).serialize());
             $.post(signInUrl, $(this).serialize(), function(response) {
+                console.log(response);
+                if (response.status == "success") {
+                    refreshSessionState(response.data);
+                    $('.janrain-modal').modal('hide');
+                } else if (response.status == "error") {
+                    var alert = $('#janrainSignInScreen .janrain-form-error:first');
+                    alert.text(response.message);
+                    alert.show();
+                }
+            });
+
+            e.preventDefault();
+        });
+
+        // Bind reigstration forms to register() method
+        $('.janrain-registration-form').submit(function(e) {
+            // TODO: this becomes register()
+            console.log($(this).serialize());
+            $.post(registerUrl, $(this).serialize(), function(response) {
                 console.log(response);
                 if (response.status == "success") {
                     refreshSessionState(response.data);
@@ -94,6 +114,17 @@ var JanrainBootstrap = (function($, janrain) {
                         for (var i=0; response.data.length; i++) {
                             console.log
                         }
+                        //Response code 310 indicates the user does not exist in the database
+                        //and the social registration form must be completed.
+                        if (response.code == 310) {
+                            $('.janrain-modal').modal('hide');
+                            $('#socialRegFirstName').val(response.data.prereg_fields.firstName);
+                            $('#socialRegLastName').val(response.data.prereg_fields.lastName);
+                            $('#socialRegDisplayName').val(response.data.prereg_fields.displayName);
+                            $('#socialRegEmail').val(response.data.prereg_fields.emailAddress);
+                            $('#socialRegToken').val(janrainResponse.token);
+                            $('#janrainSocialRegistrationScreen').modal('show');
+                        }    
                     } else {
                         $('#janrainEngageError').text(response.message);
                         $('#janrainEngageError').show();
