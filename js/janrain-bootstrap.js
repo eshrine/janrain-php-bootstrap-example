@@ -40,6 +40,8 @@ var JanrainBootstrap = (function($, janrain) {
     var signOutUrl = 'sign_out.php';
     var registerUrl = 'register.php';
     var sessionDataUrl = 'session_data.php';
+    var profileDataUrl = 'profile_data.php';
+    var saveProfileUrl = 'save_profile.php';
 
     var addBootstrapEventHandlers = function() {
         // Hide all errors in the modal dialogs when the modal is hidden
@@ -91,6 +93,25 @@ var JanrainBootstrap = (function($, janrain) {
         });
     };
 
+    // Bind profile form to saveProfile() method
+        $('.janrain-profile-form').submit(function(e) {
+            // TODO: this becomes saveProfile()
+            console.log($(this).serialize());
+            $.post(saveProfileUrl, $(this).serialize(), function(response) {
+                console.log("saveProfile", response);
+                if (response.status == "success") {
+                    $('#alert_placeholder').html('<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Success!</strong> Your profile has been successfully updated.</div>');
+                    $('html, body').animate({ scrollTop: 0 }, 0);
+                } else if (response.status == "error") {
+                    var alert = $('#janrainEditProfileScreen .janrain-form-error:first');
+                    alert.text(response.message);
+                    alert.show();
+                }
+            });
+
+            e.preventDefault();
+        });
+
     /*
     Add Janrain Event Handlers
 
@@ -105,7 +126,7 @@ var JanrainBootstrap = (function($, janrain) {
             $.post(signInUrl, {
                 'token': janrainResponse.token
             }, function(response) {
-                console.log(response);
+                console.log('signIn', response);
                 if (response.status == "success") {
                     refreshSessionState(response.data);
                     $('.janrain-modal').modal('hide');
@@ -171,11 +192,36 @@ var JanrainBootstrap = (function($, janrain) {
             $('.janrain-display-name').text(sessionData.displayName);
             $('.janrain-hide-if-session').hide();
             $('.janrain-show-if-session').show();
+
+            if(window.location.pathname == "/bootstrap-php/editProfile.html"){
+                getProfile(sessionData.token);
+            }
         } else {
             $('.janrain-display-name').text("User");
             $('.janrain-hide-if-session').show();
             $('.janrain-show-if-session').hide();
         }
+    };
+
+    /*
+    Load Profile
+
+    Request profile data from the server
+    */
+    var getProfile = function(token) {
+        $.post(profileDataUrl, {
+            'token': token
+        }, function(response) {
+            console.log('getProfile', response)
+            if(response.status == 'success'){
+                $('#profileFirstName').val(response.data.result.givenName);
+                $('#profileLastName').val(response.data.result.familyName);
+                $('#profileDisplayName').val(response.data.result.displayName);
+                $('#profileEmail').val(response.data.result.email);
+                $('#profileGender').val(response.data.result.gender);
+                $('#cover').fadeOut(1000);
+            }
+        });
     };
 
     /*

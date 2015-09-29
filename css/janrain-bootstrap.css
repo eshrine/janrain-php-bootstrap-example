@@ -14,6 +14,18 @@ body {
     width: 420px;
 }
 
+.janrain-profile-form {
+	width: 420px;
+}
+
 #janrainEngageEmbed {
   padding: 0 10px 0 10px;
+}
+
+#cover {
+    background: url("http://preloaders.net/preloaders/712/Floating%20rays.gif") no-repeat scroll center center #FFF;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+
 }

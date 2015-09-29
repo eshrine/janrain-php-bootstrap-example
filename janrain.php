@@ -162,7 +162,6 @@ function janrain_set_session_data($tokens, $profile) {
     $_SESSION['janrain_displayName'] = $profile['displayName'];
 }
 
-
 /**
  *  Get data about the Janrain user which can be exposed client-side. Secure
  *  information (such as the refresh token) should not be exposed client-side.
@@ -173,14 +172,62 @@ function janrain_get_client_side_session_data() {
     if (!empty($_SESSION['janrain_uuid'])) {
         return array(
             'uuid' => $_SESSION['janrain_uuid'],
+            'token' => $_SESSION['janrain_access_token'],
             'displayName' => $_SESSION['janrain_displayName']
         );
     } else {
         return array(
             'uuid' => null,
+            'token' => null,
             'displayName' => null
         );
     }
+}
+
+/**
+ *  Retrieve an authenticated user's profile data using the access
+ *
+ *  @param string @token Janrain access token to use when retrieving profile data
+ * 
+ *  @return array associative array representation of the JSON response from
+ *                the Janrain API
+ */
+function janrain_get_profile_data($token) {
+    $params = array(
+        'access_token' => $token,
+        'type_name' => 'user'
+    );
+
+    return janrain_api('/entity', $params);
+}
+
+/**
+ *  Save the user's profile data 
+ *
+ *  @param string $accessToken      user's access token
+ *  @param string $email            user's email address
+ *  @param string $firstName        user's first name
+ *  @param string $lastName         user's last name
+ *  @param string $displayName      user's display name
+ * 
+ *  @return array associative array representation of the JSON response from
+ *                the Janrain API
+ */
+function janrain_save_profile_data($accessToken, $email, $firstName, $lastName, $displayName) {
+    $params = array(
+            'client_id' => JANRAIN_LOGIN_CLIENT_ID,
+            'locale' => 'en-US',
+            'access_token' => $accessToken,
+            'form' => 'editProfileForm',
+            'firstName' => $firstName,
+            'lastName' => $lastName,
+            'displayName' => $displayName,
+            'emailAddress' => $email
+        );
+
+    trigger_error(json_encode($params));
+
+    return janrain_api('/oauth/update_profile_native', $params);
 }
 
 
@@ -202,7 +249,6 @@ function janrain_api($call, $params) {
 
     $response = curl_exec($curl);
     curl_close($curl);
-
     return json_decode($response, true);
 }
 ?>
