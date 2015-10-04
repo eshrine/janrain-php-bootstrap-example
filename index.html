@@ -41,18 +41,18 @@
               <li>
                 <div class="dropdown hide janrain-show-if-session">
                   <button type="button" class="btn navbar-btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="glyphicon glyphicon-user"></i> <span class="janrain-display-name">User</span></a>
+                    <span class="glyphicon glyphicon-user"></span> <span class="janrain-display-name">User</span></a>
                     <span class="caret"></span>
                   </button>
                   <ul class="dropdown-menu" role="menu">
                     <li>
                       <a href="editProfile.html" >
-                        <i class="glyphicon glyphicon-user"></i>&nbsp;&nbsp;My Account
+                        <span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;My Account
                       </a>
                     </li>
                     <li>
                       <a href="index.html" class="janrain-sign-out">
-                        <i class="glyphicon glyphicon-log-out"></i>&nbsp;&nbsp;Sign Out
+                        <span class="glyphicon glyphicon-log-out"></span>&nbsp;&nbsp;Sign Out
                       </a>
                     </li>
                   </ul>
@@ -60,10 +60,10 @@
               </li>
               <li>
                 <button class="btn navbar-btn btn-primary janrain-hide-if-session" data-toggle="modal" data-target="#janrainSignInScreen">
-                  <i class="glyphicon glyphicon-log-in"></i>&nbsp;&nbsp;Sign In
+                  <span class="glyphicon glyphicon-log-in"></span>&nbsp;&nbsp;Sign In
                 </button>
                 <button class="btn navbar-btn janrain-hide-if-session" data-toggle="modal" data-target="#janrainTraditionalRegistrationScreen">
-                  <i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Create Account
+                  <span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Create Account
                 </button>
               </li>
             </ul>
@@ -76,11 +76,11 @@
 
     
 
+    <!-- Modals -->
+
+    <!--Sign In -->
+
     
-
-    <!-- Registration & Sign In forms -->
-
-    <!-- Modal -->
     <div class="modal fade janrain-modal" id="janrainSignInScreen" tabindex="-1" role="dialog">
       <div class="modal-dialog janrain-modal-dialog">
         <div class="modal-content">
@@ -105,9 +105,10 @@
                 <label for="signInPassword">Password</label>
                 <input type="password" class="form-control" name="password" placeholder="Password" required>
               </div>
+              <p><a href="#" data-dismiss="modal" data-toggle="modal" data-target="#janrainForgotPassword">Forgot password?</a></p>
               <div class="text-right">
                 <button type="submit" class="btn btn-primary">
-                  <i class="glyphicon glyphicon-log-in"></i>&nbsp;&nbsp;Sign In
+                  <span class="glyphicon glyphicon-log-in"></span>&nbsp;&nbsp;Sign In
                 </button>
               </div>
             </form>
@@ -115,7 +116,7 @@
           <div class="modal-footer">
             <div class="pull-left">
               Don't have an account?
-              <a href="#janrainTraditionalRegistrationScreen" data-dismiss="modal" data-toggle="modal" data-target="#janrainTraditionalRegistrationScreen">
+              <a href="#" data-dismiss="modal" data-toggle="modal" data-target="#janrainTraditionalRegistrationScreen">
                 Create Account
               </a>
             </div>
@@ -123,6 +124,8 @@
         </div>
       </div>
     </div>
+
+    <!-- Registration -->
 
     <div class="modal fade janrain-modal" id="janrainSocialRegistrationScreen" tabindex="-1" role="dialog">
       <div class="modal-dialog">
@@ -169,7 +172,7 @@
             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
             <h4 class="modal-title" id="myModalLabel">Create Account</h4>
               Already have an account?
-              <a href="#janrainTraditionalRegistrationScreen" data-dismiss="modal" data-toggle="modal" data-target="#janrainSignInScreen">
+              <a href="#" data-dismiss="modal" data-toggle="modal" data-target="#janrainSignInScreen">
               Sign In
               </a>
           </div>
@@ -204,6 +207,142 @@
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
               <button type="submit" class="btn btn-primary">Create Account</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Forgot Password -->
+    <div class="modal fade janrain-modal"  id="janrainForgotPassword" tabindex="-1" role="dialog">
+      <div class="modal-dialog janrain-modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="myModalLabel">Create a New Password</h4>
+          </div>
+          <form role="form" class="janrain-forgot-password">
+            <div class="modal-body">
+              <p>Enter your email address below and we'll send you instructions to create a new password.</p>
+              <div class="form-group">
+                <label for="emailAddress">Email:</label>
+                <input type="email" class="form-control" name="emailAddress" placeholder="Email" required>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal" data-toggle="modal" data-target="#janrainSignInScreen">
+                <span class="glyphicon glyphicon-chevron-left"></span></button>
+              <button type="submit" class="btn btn-primary">
+                <span class="glyphicon glyphicon glyphicon-envelope"></span>&nbsp;&nbsp;Send</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade janrain-modal"  id="janrainForgotPasswordSuccess" tabindex="-1" role="dialog">
+      <div class="modal-dialog janrain-modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="myModalLabel">Please check your email</h4>
+          </div>
+            <div class="modal-body">
+              <p>We've sent an email with instructions to create a new password. Your existing password has not been changed.</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reset Password Modals -->
+    <div class="modal fade janrain-modal" id="janrainResetPassword" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="myModalLabel">Create New Password</h4>
+          </div>
+          <form role="form" class="janrain-reset-password-form">
+            <div class="modal-body">
+              <div class="form-group">
+                <input type="hidden" class="form-control" name="token" id="resetPasswordToken" required>
+              </div>
+              <div class="form-group">
+                <label for="firstName">New Password:</label>
+                <input type="password" class="form-control" name="newPassword" id="newPassword" required>
+              </div>
+              <div class="form-group">
+                <label for="lastName">Confirm Password:</label>
+                <input type="password" class="form-control" name="newPasswordConfirm" id="newPasswordConfirm" required>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade janrain-modal"  id="janrainResetPasswordSuccess" tabindex="-1" role="dialog">
+      <div class="modal-dialog janrain-modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="myModalLabel">Your password has been changed</h4>
+          </div>
+            <div class="modal-body">
+              <p>Password has been successfully updated.</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#janrainSignInScreen"><span class="glyphicon glyphicon-log-in"></span>&nbsp;&nbsp;Sign In</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade janrain-modal" id="janrainResetPasswordRequestCode" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="myModalLabel">Create New Password</h4>
+          </div>
+          <form role="form" class="janrain-reset-password-request-code">
+            <div class="modal-body">
+              <p>We didn't recognize that password reset code. Enter your email address to get a new one.</p>
+              <div class="alert alert-danger hide janrain-form-error janrain-error" role="alert"></div>
+              <div class="form-group">
+                <label for="emailAddress">Email:</label>
+                <input type="email" class="form-control" name="emailAddress" placeholder="Email" required>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">
+                <span class="glyphicon glyphicon glyphicon-envelope"></span>&nbsp;&nbsp;Send</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade janrain-modal"  id="janrainResetPasswordRequestCodeSuccess" tabindex="-1" role="dialog">
+      <div class="modal-dialog janrain-modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="myModalLabel">Please check your email</h4>
+          </div>
+            <div class="modal-body">
+              <p>We've sent an email with instructions to create a new password. Your existing password has not been changed.</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
           </form>
         </div>

@@ -132,6 +132,26 @@ function janrain_exchange_authorization_code($authorization_code) {
     return janrain_api('/oauth/token', $params);
 }
 
+/**
+ *  Exchange password reset code for access token and refresh token
+ *
+ *  @param string $code authorization code returned from forgot password flow
+ *
+ *  @return array associative array representation of the JSON response from
+ *                the Janrain API
+ */
+function janrain_exchange_password_reset_code($code) {
+    $params = array(
+        'client_id' => JANRAIN_LOGIN_CLIENT_ID,
+        'client_secret' => JANRAIN_LOGIN_CLIENT_SECRET,
+        'grant_type' => 'authorization_code',
+        'code' => $code,
+        'redirect_uri' => JANRAIN_PASSWORD_RECOVER_URL
+    );
+
+    return janrain_api('/oauth/token', $params);
+}
+
 
 /**
  *  Save information about the authenticated Janrain user in the PHP session.
@@ -232,6 +252,53 @@ function janrain_save_profile_data($accessToken, $email, $firstName, $lastName, 
     return janrain_api('/oauth/update_profile_native', $params);
 }
 
+/**
+ *  Initiate a forgot password flow 
+ *
+ *  @param string $email           user's email address
+ * 
+ *  @return array associative array representation of the JSON response from
+ *                the Janrain API
+ */
+function janrain_forgot_password($email) {
+    $params = array(
+        'client_id' => JANRAIN_LOGIN_CLIENT_ID,
+        'redirect_uri' => JANRAIN_PASSWORD_RECOVER_URL,
+        'locale' => 'en-US',
+        'response_type' => 'code',
+        'form' => 'forgotPasswordForm',
+        'signInEmailAddress' => $email
+    );
+
+    trigger_error(json_encode($params));
+
+    return janrain_api('/oauth/forgot_password_native', $params);
+}
+
+/**
+ *  Change a user's password
+ *
+ *  @param string $accessToken           user's access token
+ *  @param string $newPassword            user's new password
+ *  @param string $newPasswordConfirm     user's new password confirmed
+ * 
+ *  @return array associative array representation of the JSON response from
+ *                the Janrain API
+ */
+function janrain_change_password($accessToken, $newPassword, $newPasswordConfirm) {
+    $params = array(
+        'client_id' => JANRAIN_LOGIN_CLIENT_ID,
+        'access_token' => $accessToken,
+        'locale' => 'en-US',
+        'form' => 'changePasswordFormNoAuth',
+        'newPassword' => $newPassword,
+        'newPasswordConfirm' => $newPasswordConfirm
+    );
+
+    trigger_error(json_encode($params));
+
+    return janrain_api('/oauth/update_profile_native', $params);
+}
 
 /**
  *  Make a call to the Janrain API

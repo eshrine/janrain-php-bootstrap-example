@@ -36,12 +36,14 @@
 
 var JanrainBootstrap = (function($, janrain) {
 
-    var signInUrl = 'sign_in.php';
-    var signOutUrl = 'sign_out.php';
-    var registerUrl = 'register.php';
-    var sessionDataUrl = 'session_data.php';
-    var profileDataUrl = 'profile_data.php';
-    var saveProfileUrl = 'save_profile.php';
+    var signInUrl = 'php/sign_in.php';
+    var signOutUrl = 'php/sign_out.php';
+    var registerUrl = 'php/register.php';
+    var sessionDataUrl = 'php/session_data.php';
+    var profileDataUrl = 'php/profile_data.php';
+    var saveProfileUrl = 'php/save_profile.php';
+    var forgotPasswordUrl = 'php/forgot_password.php';
+    var resetPasswordUrl = 'php/reset_password.php';
 
     var addBootstrapEventHandlers = function() {
         // Hide all errors in the modal dialogs when the modal is hidden
@@ -112,6 +114,63 @@ var JanrainBootstrap = (function($, janrain) {
             e.preventDefault();
         });
 
+        // Bind forgotPassword form to forgotPassword() method
+        $('.janrain-forgot-password').submit(function(e) {
+            // TODO: this becomes forgotPassword()
+            console.log($(this).serialize());
+            $.post(forgotPasswordUrl, $(this).serialize(), function(response) {
+                console.log("forgotPassword", response);
+                if (response.status == "success") {
+                    $('#janrainForgotPassword').modal('hide');
+                    $('#janrainForgotPasswordSuccess').modal('show');
+                } else if (response.status == "error") {
+                    var alert = $('#janrainForgotPasswordScreen .janrain-form-error:first');
+                    alert.text(response.message);
+                    alert.show();
+                }
+            });
+
+            e.preventDefault();
+        });
+
+        // Bind resetPassword form to resetPassword() method
+        $('.janrain-reset-password-form').submit(function(e) {
+            // TODO: this becomes forgotPassword()
+            console.log($(this).serialize());
+            $.post(resetPasswordUrl, $(this).serialize(), function(response) {
+                console.log("resetPassword", response);
+                if (response.status == "success") {
+                    $('#janrainResetPassword').modal('hide');
+                    $('#janrainResetPasswordSuccess').modal('show');
+                } else if (response.status == "error") {
+                    var alert = $('#janrainResetPassword .janrain-form-error:first');
+                    alert.text(response.message);
+                    alert.show();
+                }
+            });
+
+            e.preventDefault();
+        });
+
+        // Bind resetPasswordRequestCode form to resetPasswordRequestCode() method
+        $('.janrain-reset-password-request-code').submit(function(e) {
+            // TODO: this becomes forgotPassword()
+            console.log($(this).serialize());
+            $.post(forgotPasswordUrl, $(this).serialize(), function(response) {
+                console.log("forgotPassword", response);
+                if (response.status == "success") {
+                    $('#janrainResetPasswordRequestCode').modal('hide');
+                    $('#janrainResetPasswordRequestCodeSuccess').modal('show');
+                } else if (response.status == "error") {
+                    var alert = $('#janrainResetPasswordRequestCode .janrain-form-error:first');
+                    alert.text(response.message);
+                    alert.show();
+                }
+            });
+
+            e.preventDefault();
+        });
+
     /*
     Add Janrain Event Handlers
 
@@ -164,9 +223,29 @@ var JanrainBootstrap = (function($, janrain) {
         // with jQuery show()/hide() functionality here.
         $('.janrain-show-if-session,.janrain-error').hide().removeClass('hide');
 
+    
         addBootstrapEventHandlers();
         addJanrainEventHandlers();
         refreshSession();
+
+        //TODO: this becomes getParams()
+        var params = window.location.search.replace(/(^\?)/,'').split("&").map(function(n){return n = n.split("="),this[n[0]] = n[1],this}.bind({}))[0];;
+        
+        if(params['code'] != null && params['code'] != undefined){
+            $.post(resetPasswordUrl, {'code': params['code']}, function(response) {
+                    console.log("verifyCode", response);
+                    if (response.status == "success") {
+                        $('#resetPasswordToken').val(response.token);
+                        $('#janrainResetPassword').modal('show');
+                    } else if (response.status == "error") {
+                       $('#janrainResetPasswordRequestCode').modal('show');
+                    }
+            });
+        }
+        
+        
+
+        //
     };
 
     /*
