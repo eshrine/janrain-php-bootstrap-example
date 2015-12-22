@@ -1,3 +1,18 @@
+Eric's WIP Widget Project Notes 
+===================
+1. Built using SE Demo site Capture app using 'standard_newer' flow with version '4b1c146f-b22d-4f79-a08b-01702b883715'
+2. The API client 'Bootstrap Demo Client' is configured and ready for use if the project is located at localhost/bootstrap-php.'
+3. If you want to install the project in another location, the following changes must be made:
+    a. The following line in janrain-bootstrap.js needs to updated with the proper path: if(window.location.pathname == "/bootstrap-php/editProfile.html"){
+    b. config.php file needs to be updated with the correct forgot password URL
+    c. Create a new API client, and add a client setting to specify the correct forgot password URL
+4. Code is set to pull in Eric's demo Engage app 'eshrine'
+    a. If you want to use your own Engage app, you will need to create a new API client as described below and set the API client settings to use your Engage app.
+    b. The janrain-bootstrap.js file will also be updated to source the correct load files from rpxnow.com.
+
+
+
+
 Janrain PHP Bootstrap Example
 =============================
 
